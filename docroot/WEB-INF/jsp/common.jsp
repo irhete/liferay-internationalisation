@@ -13,7 +13,6 @@
 	<portlet:param name="action" value="renderManageLanguages"></portlet:param>
 </portlet:renderURL>
 <portlet:renderURL var="handleRenderRequestMethodURL">
-	<portlet:param name="action" value="defaultPage"></portlet:param>
 </portlet:renderURL>
 
 <c:choose>

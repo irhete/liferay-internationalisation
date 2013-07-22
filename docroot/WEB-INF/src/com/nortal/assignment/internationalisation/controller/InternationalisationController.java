@@ -48,12 +48,6 @@ public class InternationalisationController {
 		return "defaultRender";
 	}
 
-	@RenderMapping(params = "action=defaultPage")
-	public String renderDefaultPage(RenderRequest request,
-			RenderResponse response, Model model) {
-		return handleRenderRequest(request, response, model);
-	}
-
 	@ActionMapping(params = "action=addTranslation")
 	public void addTranslationMethod(ActionRequest request,
 			ActionResponse response,
