@@ -16,11 +16,6 @@
 </portlet:renderURL>
 
 <c:choose>
-	<c:when test="${not empty errors}">
-		<c:forEach items="${errors}" var="validationError">
-			<p class="error">${validationError.code}</p>
-	</c:forEach>
-	</c:when>
 	<c:when test="${not empty error}">
 		<p class="error">${error}</p>
 	</c:when>

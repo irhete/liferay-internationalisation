@@ -64,13 +64,14 @@ public class TranslationDAOImpl implements TranslationDAO {
 			Language language = new Language();
 			language.setLocale(rs.getString("locale"));
 			language.setDisplayLanguage(rs.getString("name"));
+			language.setId(rs.getInt("id"));
 			return language;
 		}
 	}
 
 	@Override
 	public List<Language> getLanguages() {
-		String sql = "SELECT name, locale FROM language";
+		String sql = "SELECT * FROM language";
 		List<Language> languages = jdbcTemplate.query(sql,
 				new LanguageRowMapper());
 		return languages;
@@ -108,11 +109,10 @@ public class TranslationDAOImpl implements TranslationDAO {
 	}
 
 	@Override
-	public void editLanguage(String oldLocale, Language language)
-			throws DuplicateKeyException {
-		final String sql = "UPDATE language SET name = ?, locale = ? WHERE locale = ?";
+	public void editLanguage(Language language) throws DuplicateKeyException {
+		final String sql = "UPDATE language SET name = ?, locale = ? WHERE id = ?";
 		jdbcTemplate.update(sql, language.getDisplayLanguage(),
-				language.getLocale(), oldLocale);
+				language.getLocale(), language.getId());
 	}
 
 	@Override
@@ -123,9 +123,17 @@ public class TranslationDAOImpl implements TranslationDAO {
 
 	@Override
 	public Language getLanguage(final String locale) {
-		String sql = "SELECT name, locale FROM language WHERE locale = ?";
+		String sql = "SELECT * FROM language WHERE locale = ?";
 		List<Language> languages = jdbcTemplate.query(sql,
 				new LanguageRowMapper(), locale);
+		return languages.get(0);
+	}
+
+	@Override
+	public Language getLanguage(final int id) {
+		String sql = "SELECT * FROM language WHERE id = ?";
+		List<Language> languages = jdbcTemplate.query(sql,
+				new LanguageRowMapper(), id);
 		return languages.get(0);
 	}
 

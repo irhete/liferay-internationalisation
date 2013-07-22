@@ -11,9 +11,6 @@
 	<portlet:param name="action" value="deleteTranslation"></portlet:param>
 </portlet:actionURL>
 
-<liferay-ui:success key="success" message="Translation successfully added!" />
-<liferay-ui:error key="error" message="Sorry, an error prevented saving your greeting" />
-
 <form:form method="post" action="${showTranslationsMethodURL}"
 	modelAttribute="selectedLanguage">
 	<form:select path="locale">
@@ -49,6 +46,7 @@
 						<td><input name="translations[${status.index}].value" type="text"
 							value="${translation.value}" /></td>
 						<td><a href="${deleteTranslationMethodURL}&translation=${translation}"><spring:message code="delete.text"/></a></td>
+					<td><form:errors path="translations[${status.index}]" cssClass="error"/></td>
 					</tr>
 				</c:forEach>
 			</table>
@@ -62,6 +60,7 @@
 <h1><spring:message code="add.translation.text"/></h1>
 
 <form:form id="addTranslationForm" action="${addTranslationMethodURL}" method="post" commandName="newTranslation">
+	<form:errors path="*" cssClass="error"/>
 	<table>
 		<tr>
 			<th><spring:message code="key.text"/></th>
@@ -73,6 +72,7 @@
 			<td><input type="submit" value="<spring:message code="add.text"/>" /></td>
 		</tr>
 	</table>
+	
 </form:form>
 
 <a href="${handleRenderRequestMethodURL}"><spring:message code="back.text"/></a>

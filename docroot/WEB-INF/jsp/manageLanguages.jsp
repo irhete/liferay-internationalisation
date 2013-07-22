@@ -8,17 +8,22 @@
 	<portlet:param name="action" value="renderEditLanguage"></portlet:param>
 </portlet:renderURL>
 
-
-<form method="post" action="${renderEditLanguageMethodURL}">
-<select name="languageSelect">
+<form:form method="post" action="${renderEditLanguageMethodURL}"
+	modelAttribute="selectedLanguage">
+	<form:select path="locale">
 		<option value="language">
-			--<spring:message code="language.text"/>--
+			--
+			<spring:message code="language.text" />
+			--
 		</option>
-		<c:forEach items="${languages}" var="language">
-			<option value="${language.locale}">${language.displayLanguage}</option>
-		</c:forEach>
-	</select> <input type="submit" value="<spring:message code="edit.text"/>" />
-</form>
+		<form:options items="${languages}" itemValue="locale"
+			itemLabel="displayLanguage" />
+	</form:select>
+	<input type="submit"
+		value="<spring:message code="edit.text"/>" />
+
+</form:form>
+
 
 <form:form method="post" action="${addLanguageMethodURL}" commandName="newLanguage">
 <table>

@@ -13,7 +13,8 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.Errors;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -39,11 +40,14 @@ public class InternationalisationController {
 	@Resource
 	private VerticalDatabaseMessageSource messageSource;
 
+	@ModelAttribute("languages")
+	public List<Language> getLanguages() {
+		return translationDAO.getLanguages();
+	}
+
 	@RenderMapping
 	public String handleRenderRequest(RenderRequest request,
 			RenderResponse response, Model model) {
-		List<Language> languages = translationDAO.getLanguages();
-		model.addAttribute("languages", languages);
 		model.addAttribute("selectedLanguage", new Language());
 		return "defaultRender";
 	}
@@ -52,27 +56,23 @@ public class InternationalisationController {
 	public void addTranslationMethod(ActionRequest request,
 			ActionResponse response,
 			@ModelAttribute("newTranslation") Translation translation,
-			@ModelAttribute("selectedLanguage") Language selectedLanguage)
-			throws ParseException {
+			BindingResult result,
+			@ModelAttribute("selectedLanguage") Language selectedLanguage,
+			Model model) throws ParseException {
 		translation.setLanguage(selectedLanguage.getLocale());
 		TranslationValidator validator = new TranslationValidator();
-		Errors errors = new BeanPropertyBindingResult(translation,
-				"translation");
-		validator.validate(translation, errors);
+		validator.validate(translation, result);
 
-		if (errors.hasErrors()) {
-			request.setAttribute("errors", errors.getAllErrors());
-		} else {
+		if (!result.hasErrors()) {
 			try {
 				translationDAO.insert(translation);
 				messageSource.init();
-				request.setAttribute("success",
-						"Translation successfully added!");
+				model.addAttribute("success", "Translation successfully added!");
 			} catch (DuplicateKeyException e) {
-				request.setAttribute("error",
+				result.addError(new ObjectError("newTranslation",
 						"Translation for key '" + translation.getKey()
 								+ "' and locale '" + translation.getLanguage()
-								+ "' already exists.");
+								+ "' already exists."));
 			}
 		}
 		response.setRenderParameter("action", "showTranslations");
@@ -87,13 +87,6 @@ public class InternationalisationController {
 		form.setTranslations(translationDAO.getTranslations(locale));
 		model.addAttribute("translationsForm", form);
 
-		if (request.getAttribute("errors") != null) {
-			model.addAttribute("errors", request.getAttribute("errors"));
-		} else if (request.getAttribute("error") != null) {
-			model.addAttribute("error", request.getAttribute("error"));
-		} else if (request.getAttribute("success") != null) {
-			model.addAttribute("success", request.getAttribute("success"));
-		}
 		try {
 			selectedLanguage = translationDAO.getLanguage(selectedLanguage
 					.getLocale());
@@ -103,23 +96,18 @@ public class InternationalisationController {
 			return handleRenderRequest(request, response, model);
 		}
 
-		List<Language> languages = translationDAO.getLanguages();
-		model.addAttribute("languages", languages);
 		return "viewAndAddTranslationsForLanguage";
 	}
 
 	@ActionMapping(params = "action=addLanguage")
 	public void addLanguageMethod(ActionRequest request,
 			ActionResponse response,
-			@ModelAttribute("newLanguage") Language newLanguage) {
+			@ModelAttribute("newLanguage") Language newLanguage,
+			BindingResult result) {
 
 		LanguageValidator validator = new LanguageValidator();
-		Errors errors = new BeanPropertyBindingResult(newLanguage,
-				"newLanguage");
-		validator.validate(newLanguage, errors);
-		if (errors.hasErrors()) {
-			request.setAttribute("errors", errors.getAllErrors());
-		} else {
+		validator.validate(newLanguage, result);
+		if (!result.hasErrors()) {
 			try {
 				translationDAO.addLanguage(newLanguage);
 				request.setAttribute("success", "Language successfully added!");
@@ -134,8 +122,6 @@ public class InternationalisationController {
 	@RenderMapping(params = "action=renderManageLanguages")
 	public String renderManageLanguagesMethod(RenderRequest request,
 			RenderResponse response, Model model) {
-		List<Language> languages = translationDAO.getLanguages();
-		model.addAttribute("languages", languages);
 		return "manageLanguages";
 	}
 
@@ -167,27 +153,22 @@ public class InternationalisationController {
 		response.setRenderParameter("action", "renderManageLanguages");
 	}
 
+	// TODO: selectedLanguage changing together with updatedLanguage
 	@ActionMapping(params = "action=editLanguage")
 	public void editLanguageMethod(ActionRequest request,
 			ActionResponse response,
 			@ModelAttribute("updatedLanguage") Language updatedLanguage,
+			BindingResult result,
 			@ModelAttribute("selectedLanguage") Language selectedLanguage,
 			Model model) {
+		updatedLanguage.setId(selectedLanguage.getId());
 		LanguageValidator validator = new LanguageValidator();
-		Errors errors = new BeanPropertyBindingResult(updatedLanguage,
-				"language");
-		validator.validate(updatedLanguage, errors);
-		if (errors.hasErrors()) {
-			request.setAttribute("errors", errors.getAllErrors());
-			response.setRenderParameter("languageSelect",
-					selectedLanguage.getLocale());
-		} else {
+		validator.validate(updatedLanguage, result);
+		if (!result.hasErrors()) {
 			try {
-				translationDAO.editLanguage(selectedLanguage.getLocale(),
-						updatedLanguage);
+				translationDAO.editLanguage(updatedLanguage);
 				request.setAttribute("success",
 						"Language successfully updated!");
-				model.addAttribute("selectedLanguage", updatedLanguage);
 			} catch (DuplicateKeyException e) {
 				request.setAttribute("error", "Language with locale '"
 						+ updatedLanguage.getLocale() + "' already exists.");
@@ -200,44 +181,43 @@ public class InternationalisationController {
 	public void updateTranslationsMethod(ActionRequest request,
 			ActionResponse response,
 			@ModelAttribute("selectedLanguage") Language selectedLanguage,
-			@ModelAttribute("translationsForm") TranslationsForm form)
-			throws ParseException {
+			@ModelAttribute("translationsForm") TranslationsForm form,
+			BindingResult result) throws ParseException {
 		List<Translation> translations = form.getTranslations();
 		String currentLocale = selectedLanguage.getLocale();
 		List<Translation> oldTranslations = translationDAO
 				.getTranslations(currentLocale);
 		TranslationValidator validator = new TranslationValidator();
-		for (int i = 0; i < translations.size(); i++) {
-			String newKey = translations.get(i).getKey();
-			String newValue = translations.get(i).getValue();
-			Translation newTranslation = new Translation(currentLocale, newKey,
-					newValue);
-			Errors errors = new BeanPropertyBindingResult(newTranslation,
-					"newTranslation");
-			validator.validate(newTranslation, errors);
-
+		int i = 0;
+		for (Translation translation : translations) {
+			BeanPropertyBindingResult errors = new BeanPropertyBindingResult(
+					translation, "translations[" + i + "]");
+			validator.validate(translation, errors);
+			i++;
 			if (errors.hasErrors()) {
-				request.setAttribute("errors", errors.getAllErrors());
-			} else if (oldTranslations.get(i).getKey().equals(newKey)) {
-				translationDAO.updateTranslationValue(newTranslation);
+				System.out.println("error");
+				result.addError(new ObjectError("translations[" + i + "]",
+						"error.text"));
+			} else if (oldTranslations.get(i).getKey()
+					.equals(translation.getKey())) {
+				translationDAO.updateTranslationValue(translation);
 				request.setAttribute("success",
 						"Translation successfully updated!");
 			} else {
 				try {
 					translationDAO.updateTranslationKeyAndValue(oldTranslations
-							.get(i).getKey(), newTranslation);
+							.get(i).getKey(), translation);
 					request.setAttribute("success",
 							"Translation successfully updated!");
 				} catch (DuplicateKeyException e) {
 					request.setAttribute("error", "Translation for key '"
-							+ newKey + "' and locale '" + currentLocale
-							+ "' already exists.");
+							+ translation.getKey() + "' and locale '"
+							+ currentLocale + "' already exists.");
 				}
 			}
 
 		}
 		messageSource.init();
-		response.setRenderParameter("languageSelect", currentLocale);
 		response.setRenderParameter("action", "showTranslations");
 	}
 

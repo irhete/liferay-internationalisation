@@ -5,13 +5,13 @@ public class Translation {
 	private String language;
 	private String key;
 	private String value;
-	
+
 	public Translation(String language, String key, String value) {
 		setLanguage(language);
 		setKey(key);
 		setValue(value);
 	}
-	
+
 	public Translation() {
 	}
 
@@ -38,20 +38,21 @@ public class Translation {
 	public void setKey(String key) {
 		this.key = key;
 	}
-	
+
 	@Override
 	public boolean equals(Object other) {
 		if (other == null) {
 			return false;
 		}
-	    if (other == this) {
+		if (other == this) {
 			return true;
 		}
-	    if (!(other instanceof Translation)) {
+		if (!(other instanceof Translation)) {
 			return false;
 		}
-	    Translation t1 = (Translation) other;
-		return t1.language.equals(language) && t1.key.equals(key) && t1.value.equals(value);
+		Translation t1 = (Translation) other;
+		return t1.language.equals(language) && t1.key.equals(key)
+				&& t1.value.equals(value);
 	}
 
 }

@@ -12,14 +12,16 @@
 <table>
 		<tr>
 			<th><spring:message code="language.text"/>:</th>
-			<td><input name="language" type="text" value="${selectedLanguage.displayLanguage}" /> </td>
+			<td><input name="displayLanguage" type="text" value="${selectedLanguage.displayLanguage}" /> </td>
+
 		</tr>
 		<tr>
 			<th><spring:message code="locale.text"/>:</th>
 			<td><input name="locale" type="text" value="${selectedLanguage.locale}" /></td>
+
 		</tr>
 		<tr>
-			<th />
+			<th></th>
 			<td><input type="submit" value="<spring:message code="save.text"/>" /></td>
 		</tr>
 	</table>

@@ -16,7 +16,8 @@ public class LanguageValidator implements Validator {
 	@Override
 	public void validate(Object arg0, Errors e) {
 		ValidationUtils.rejectIfEmpty(e, "locale", "Locale can not be empty");
-		ValidationUtils.rejectIfEmpty(e, "displayLanguage", "Language display name can not be empty");
+		ValidationUtils.rejectIfEmpty(e, "displayLanguage",
+				"Language display name can not be empty");
 	}
 
 }

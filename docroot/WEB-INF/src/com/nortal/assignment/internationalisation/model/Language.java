@@ -5,13 +5,14 @@ public class Language {
 	private String displayLanguage;
 	private String locale;
 	private int id;
-	
+
 	public Language(String displayName, String locale) {
 		setDisplayLanguage(displayName);
 		setLocale(locale);
 	}
-	
-	public Language() {}
+
+	public Language() {
+	}
 
 	public String getDisplayLanguage() {
 		return displayLanguage;
@@ -42,13 +43,14 @@ public class Language {
 		if (other == null) {
 			return false;
 		}
-	    if (other == this) {
+		if (other == this) {
 			return true;
 		}
-	    if (!(other instanceof Language)) {
+		if (!(other instanceof Language)) {
 			return false;
 		}
-	    Language l1 = (Language) other;
-		return l1.displayLanguage.equals(displayLanguage) && l1.locale.equals(locale) && l1.id == id;
+		Language l1 = (Language) other;
+		return l1.displayLanguage.equals(displayLanguage)
+				&& l1.locale.equals(locale) && l1.id == id;
 	}
 }

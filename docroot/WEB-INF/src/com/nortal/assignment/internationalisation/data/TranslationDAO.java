@@ -85,7 +85,7 @@ public interface TranslationDAO {
 	 *            . Display name and locale must not be null.
 	 * @throws DuplicateKeyException
 	 */
-	public void editLanguage(String oldLanguage, Language language);
+	public void editLanguage(Language language);
 
 	/**
 	 * Deletes a language from the database.
@@ -104,4 +104,6 @@ public interface TranslationDAO {
 	 * @return Language.
 	 */
 	public Language getLanguage(String locale);
+
+	public Language getLanguage(int id);
 }
