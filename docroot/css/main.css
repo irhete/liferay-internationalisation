@@ -1,0 +1,11 @@
+#translationTable td, th {
+	min-width: 75px;
+}
+
+.error {
+	color: red;
+}
+
+.success {
+	color: green;
+}
