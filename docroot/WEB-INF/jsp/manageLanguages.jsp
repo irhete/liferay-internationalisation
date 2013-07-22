@@ -20,21 +20,21 @@
 	</select> <input type="submit" value="<spring:message code="edit.text"/>" />
 </form>
 
-<form method="post" action="${addLanguageMethodURL}">
+<form:form method="post" action="${addLanguageMethodURL}" commandName="newLanguage">
 <table>
 		<tr>
 			<th><spring:message code="language.text"/>:</th>
-			<td><input name="newLanguage" type="text" /> </td>
+			<td><input name="displayLanguage" type="text" /> </td>
 		</tr>
 		<tr>
 			<th><spring:message code="locale.text"/>:</th>
-			<td><input name="newLocale" type="text" /></td>
+			<td><input name="locale" type="text" /></td>
 		</tr>
 		<tr>
 			<th />
 			<td><input type="submit" value="<spring:message code="add.language.text"/>" /></td>
 		</tr>
 	</table>
-</form>
+</form:form>
 
 <a href="${handleRenderRequestMethodURL}"><spring:message code="back.text"/></a>

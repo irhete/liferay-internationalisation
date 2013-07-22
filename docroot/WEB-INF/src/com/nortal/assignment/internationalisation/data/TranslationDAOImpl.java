@@ -29,16 +29,19 @@ public class TranslationDAOImpl implements TranslationDAO {
 	}
 
 	@Override
-	public void insert(final Translation translation) throws DuplicateKeyException {
+	public void insert(final Translation translation)
+			throws DuplicateKeyException {
 		final String sql = "INSERT INTO translation "
 				+ "(language, key, value) VALUES ((SELECT id FROM language WHERE locale = ?), ?, ?)";
-		jdbcTemplate.update(sql, translation.getLanguage(), translation.getKey(), translation.getValue());
+		jdbcTemplate.update(sql, translation.getLanguage(),
+				translation.getKey(), translation.getValue());
 	}
 
 	@Override
 	public List<Translation> getTranslations(final String locale) {
 		String sql = "SELECT t.key, t.value, l.locale FROM translation t JOIN language l ON l.id = t.language WHERE l.locale = ?";
-		List<Translation> translations = jdbcTemplate.query(sql, new TranslationRowMapper(), locale);
+		List<Translation> translations = jdbcTemplate.query(sql,
+				new TranslationRowMapper(), locale);
 		return translations;
 	}
 
@@ -53,7 +56,7 @@ public class TranslationDAOImpl implements TranslationDAO {
 			return translation;
 		}
 	}
-	
+
 	private static class LanguageRowMapper implements RowMapper<Language> {
 
 		@Override
@@ -68,51 +71,61 @@ public class TranslationDAOImpl implements TranslationDAO {
 	@Override
 	public List<Language> getLanguages() {
 		String sql = "SELECT name, locale FROM language";
-		List<Language> languages = jdbcTemplate.query(sql, new LanguageRowMapper());
+		List<Language> languages = jdbcTemplate.query(sql,
+				new LanguageRowMapper());
 		return languages;
 	}
 
 	@Override
 	public void addLanguage(Language language) throws DuplicateKeyException {
 		final String sql = "INSERT INTO language (name, locale) VALUES (?,?)";
-		jdbcTemplate.update(sql, language.getDisplayLanguage(), language.getLocale());
+		jdbcTemplate.update(sql, language.getDisplayLanguage(),
+				language.getLocale());
 	}
 
 	@Override
 	public void updateTranslationValue(Translation translation) {
 		final String sql = "UPDATE translation SET value=? WHERE key=? AND language=(SELECT id FROM language WHERE locale=?)";
-		jdbcTemplate.update(sql, translation.getValue(), translation.getKey(), translation.getLanguage());
+		jdbcTemplate.update(sql, translation.getValue(), translation.getKey(),
+				translation.getLanguage());
 	}
 
 	@Override
-	public void updateTranslationKeyAndValue(String oldKey, Translation translation) throws DuplicateKeyException {
+	public void updateTranslationKeyAndValue(String oldKey,
+			Translation translation) throws DuplicateKeyException {
 		insert(translation);
 		final String sql = "DELETE FROM translation WHERE key=? AND language=(SELECT id FROM language WHERE locale=?)";
 		jdbcTemplate.update(sql, oldKey, translation.getLanguage());
 	}
 
 	@Override
-	public void deleteTranslation(String key, String locale) {
+	public void deleteTranslation(Translation translation) {
+		System.out.println(translation.getKey());
+		System.out.println(translation.getLanguage());
 		final String sql = "DELETE FROM translation WHERE key=? AND language=(SELECT id FROM language WHERE locale=?)";
-		jdbcTemplate.update(sql, key, locale);
+		jdbcTemplate.update(sql, translation.getKey(),
+				translation.getLanguage());
 	}
 
 	@Override
-	public void editLanguage(String oldLocale, Language language) throws DuplicateKeyException {
+	public void editLanguage(String oldLocale, Language language)
+			throws DuplicateKeyException {
 		final String sql = "UPDATE language SET name = ?, locale = ? WHERE locale = ?";
-		jdbcTemplate.update(sql, language.getDisplayLanguage(), language.getLocale(), oldLocale);
+		jdbcTemplate.update(sql, language.getDisplayLanguage(),
+				language.getLocale(), oldLocale);
 	}
 
 	@Override
-	public void deleteLanguage(String locale) {
+	public void deleteLanguage(Language language) {
 		final String sql = "DELETE FROM language WHERE locale=?";
-		jdbcTemplate.update(sql, locale);
+		jdbcTemplate.update(sql, language.getLocale());
 	}
 
 	@Override
 	public Language getLanguage(final String locale) {
 		String sql = "SELECT name, locale FROM language WHERE locale = ?";
-		List<Language> languages = jdbcTemplate.query(sql, new LanguageRowMapper(), locale);
+		List<Language> languages = jdbcTemplate.query(sql,
+				new LanguageRowMapper(), locale);
 		return languages.get(0);
 	}
 

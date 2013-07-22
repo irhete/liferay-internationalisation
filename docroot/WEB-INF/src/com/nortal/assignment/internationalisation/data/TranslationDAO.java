@@ -17,7 +17,7 @@ public interface TranslationDAO {
 	 * 
 	 * @param translation
 	 *            Translation.
-	 * @throws DuplicateKeyException 
+	 * @throws DuplicateKeyException
 	 */
 	public void insert(Translation translation) throws DuplicateKeyException;
 
@@ -33,8 +33,9 @@ public interface TranslationDAO {
 	/**
 	 * Inserts language to database
 	 * 
-	 * @param language. Display name and locale must not be null. 
-	 * @throws DuplicateKeyException 
+	 * @param language
+	 *            . Display name and locale must not be null.
+	 * @throws DuplicateKeyException
 	 */
 	public void addLanguage(Language language);
 
@@ -48,47 +49,57 @@ public interface TranslationDAO {
 	/**
 	 * Updates a translation's value by its key.
 	 * 
-	 * @param translation. Key and value must not be null. Value is the updated value.
+	 * @param translation
+	 *            . Key and value must not be null. Value is the updated value.
 	 */
 	public void updateTranslationValue(Translation translation);
 
 	/**
 	 * Updates a translation's key and value by its old key.
 	 * 
-	 * @param oldKey. The old key to retrieve the translation to be updated.
-	 * @param translation. The updated translation's key and value must not be null. 
-	 * @throws DuplicateKeyException 
+	 * @param oldKey
+	 *            . The old key to retrieve the translation to be updated.
+	 * @param translation
+	 *            . The updated translation's key and value must not be null.
+	 * @throws DuplicateKeyException
 	 */
-	public void updateTranslationKeyAndValue(String oldKey, Translation translation) throws DuplicateKeyException;
+	public void updateTranslationKeyAndValue(String oldKey,
+			Translation translation) throws DuplicateKeyException;
 
 	/**
 	 * Deletes a translation from the database.
 	 * 
-	 * @param key. The key of the translation to be deleted.
-	 * @param locale. The locale of the translation to be deleted. 
+	 * @param key
+	 *            . The key of the translation to be deleted.
+	 * @param locale
+	 *            . The locale of the translation to be deleted.
 	 */
-	public void deleteTranslation(String key, String locale);
+	public void deleteTranslation(Translation translation);
 
 	/**
 	 * Updates a language.
 	 * 
-	 * @param oldLanguage. The locale of the language to be updated.
-	 * @param language. Display name and locale must not be null. 
-	 * @throws DuplicateKeyException 
+	 * @param oldLanguage
+	 *            . The locale of the language to be updated.
+	 * @param language
+	 *            . Display name and locale must not be null.
+	 * @throws DuplicateKeyException
 	 */
 	public void editLanguage(String oldLanguage, Language language);
 
 	/**
 	 * Deletes a language from the database.
 	 * 
-	 * @param locale. The locale of the language to be deleted. 
+	 * @param locale
+	 *            . The locale of the language to be deleted.
 	 */
-	public void deleteLanguage(String locale);
-	
+	public void deleteLanguage(Language language);
+
 	/**
 	 * Retrieves a language by its locale.
 	 * 
-	 * @param locale. The locale of the language. 
+	 * @param locale
+	 *            . The locale of the language.
 	 * 
 	 * @return Language.
 	 */
