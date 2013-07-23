@@ -5,6 +5,7 @@ public class Translation {
 	private String language;
 	private String key;
 	private String value;
+	private int id;
 
 	public Translation(String language, String key, String value) {
 		setLanguage(language);
@@ -53,6 +54,14 @@ public class Translation {
 		Translation t1 = (Translation) other;
 		return t1.language.equals(language) && t1.key.equals(key)
 				&& t1.value.equals(value);
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }

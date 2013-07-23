@@ -264,7 +264,7 @@ public class ControllerTests {
 		List<Translation> oldTranslations = new ArrayList<Translation>(Arrays.asList(t1, t2));
 		Mockito.when(translationDAO.getTranslations(currentLocale)).thenReturn(oldTranslations);
 		controller.updateTranslationsMethod(actionRequest, actionResponse, currentLocale, keys, values);
-		Mockito.verify(translationDAO).updateTranslationValue(newT1);
+		Mockito.verify(translationDAO).updateTranslation(newT1);
 	}
 	
 	@Test

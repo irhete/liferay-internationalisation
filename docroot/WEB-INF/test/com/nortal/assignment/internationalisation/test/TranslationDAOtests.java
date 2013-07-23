@@ -71,7 +71,7 @@ public class TranslationDAOtests {
 	@Test
 	public void testUpdateTranslationValue() {
 		Translation translation = new Translation("EN", "delete", "Remove");
-		translationDAO.updateTranslationValue(translation);
+		translationDAO.updateTranslation(translation);
 		List<Translation> translations = translationDAO.getTranslations("EN");
 		assertEquals(true, translations.contains(translation));
 	}

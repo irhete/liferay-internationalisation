@@ -51,36 +51,22 @@ public interface TranslationDAO {
 	 * 
 	 * @param translation
 	 *            . Key and value must not be null. Value is the updated value.
-	 */
-	public void updateTranslationValue(Translation translation);
-
-	/**
-	 * Updates a translation's key and value by its old key.
-	 * 
-	 * @param oldKey
-	 *            . The old key to retrieve the translation to be updated.
-	 * @param translation
-	 *            . The updated translation's key and value must not be null.
 	 * @throws DuplicateKeyException
 	 */
-	public void updateTranslationKeyAndValue(String oldKey,
-			Translation translation) throws DuplicateKeyException;
+	public void updateTranslation(Translation translation)
+			throws DuplicateKeyException;;
 
 	/**
 	 * Deletes a translation from the database.
 	 * 
-	 * @param key
-	 *            . The key of the translation to be deleted.
-	 * @param locale
-	 *            . The locale of the translation to be deleted.
+	 * @param id
+	 *            . The id of the translation to be deleted.
 	 */
-	public void deleteTranslation(Translation translation);
+	public void deleteTranslation(int translationId);
 
 	/**
 	 * Updates a language.
 	 * 
-	 * @param oldLanguage
-	 *            . The locale of the language to be updated.
 	 * @param language
 	 *            . Display name and locale must not be null.
 	 * @throws DuplicateKeyException

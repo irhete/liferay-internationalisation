@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
@@ -185,8 +186,6 @@ public class InternationalisationController {
 			BindingResult result) throws ParseException {
 		List<Translation> translations = form.getTranslations();
 		String currentLocale = selectedLanguage.getLocale();
-		List<Translation> oldTranslations = translationDAO
-				.getTranslations(currentLocale);
 		TranslationValidator validator = new TranslationValidator();
 		int i = 0;
 		for (Translation translation : translations) {
@@ -198,15 +197,9 @@ public class InternationalisationController {
 				System.out.println("error");
 				result.addError(new ObjectError("translations[" + i + "]",
 						"error.text"));
-			} else if (oldTranslations.get(i).getKey()
-					.equals(translation.getKey())) {
-				translationDAO.updateTranslationValue(translation);
-				request.setAttribute("success",
-						"Translation successfully updated!");
 			} else {
 				try {
-					translationDAO.updateTranslationKeyAndValue(oldTranslations
-							.get(i).getKey(), translation);
+					translationDAO.updateTranslation(translation);
 					request.setAttribute("success",
 							"Translation successfully updated!");
 				} catch (DuplicateKeyException e) {
@@ -223,11 +216,8 @@ public class InternationalisationController {
 
 	@ActionMapping(params = "action=deleteTranslation")
 	public void deleteTranslationMethod(ActionRequest request,
-			ActionResponse response,
-			@ModelAttribute("translation") Translation translation,
-			@ModelAttribute("selectedLanguage") Language selectedLanguage) {
-		translation.setLanguage(selectedLanguage.getLocale());
-		translationDAO.deleteTranslation(translation);
+			ActionResponse response, @RequestParam("id") int translationId) {
+		translationDAO.deleteTranslation(translationId);
 		messageSource.init();
 		request.setAttribute("success", "Translation successfully deleted!");
 		response.setRenderParameter("action", "showTranslations");

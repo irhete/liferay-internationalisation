@@ -39,7 +39,7 @@ public class TranslationDAOImpl implements TranslationDAO {
 
 	@Override
 	public List<Translation> getTranslations(final String locale) {
-		String sql = "SELECT t.key, t.value, l.locale FROM translation t JOIN language l ON l.id = t.language WHERE l.locale = ?";
+		String sql = "SELECT t.id, t.key, t.value, l.locale FROM translation t JOIN language l ON l.id = t.language WHERE l.locale = ?";
 		List<Translation> translations = jdbcTemplate.query(sql,
 				new TranslationRowMapper(), locale);
 		return translations;
@@ -53,6 +53,7 @@ public class TranslationDAOImpl implements TranslationDAO {
 			translation.setLanguage(rs.getString("locale"));
 			translation.setKey(rs.getString("key"));
 			translation.setValue(rs.getString("value"));
+			translation.setId(rs.getInt("id"));
 			return translation;
 		}
 	}
@@ -85,27 +86,16 @@ public class TranslationDAOImpl implements TranslationDAO {
 	}
 
 	@Override
-	public void updateTranslationValue(Translation translation) {
-		final String sql = "UPDATE translation SET value=? WHERE key=? AND language=(SELECT id FROM language WHERE locale=?)";
+	public void updateTranslation(Translation translation) {
+		final String sql = "UPDATE translation SET (value=?, key=?) WHERE id=?";
 		jdbcTemplate.update(sql, translation.getValue(), translation.getKey(),
-				translation.getLanguage());
+				translation.getId());
 	}
 
 	@Override
-	public void updateTranslationKeyAndValue(String oldKey,
-			Translation translation) throws DuplicateKeyException {
-		insert(translation);
-		final String sql = "DELETE FROM translation WHERE key=? AND language=(SELECT id FROM language WHERE locale=?)";
-		jdbcTemplate.update(sql, oldKey, translation.getLanguage());
-	}
-
-	@Override
-	public void deleteTranslation(Translation translation) {
-		System.out.println(translation.getKey());
-		System.out.println(translation.getLanguage());
-		final String sql = "DELETE FROM translation WHERE key=? AND language=(SELECT id FROM language WHERE locale=?)";
-		jdbcTemplate.update(sql, translation.getKey(),
-				translation.getLanguage());
+	public void deleteTranslation(int translationId) {
+		final String sql = "DELETE FROM translation WHERE id=?";
+		jdbcTemplate.update(sql, translationId);
 	}
 
 	@Override
