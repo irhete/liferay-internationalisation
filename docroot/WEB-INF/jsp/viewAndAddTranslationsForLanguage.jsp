@@ -20,7 +20,7 @@
 			--
 		</option>
 		<form:options items="${languages}" itemValue="locale"
-			itemLabel="displayLanguage" />
+			itemLabel="name" />
 	</form:select>
 	<input type="submit"
 		value="<spring:message code="show.translations.text"/>" />
@@ -29,7 +29,7 @@
 
 
 
-<h1><spring:message code="existing.translations.text"/> (${selectedLanguage.displayLanguage})</h1>
+<h1><spring:message code="existing.translations.text"/> (${selectedLanguage.name})</h1>
 <c:choose>
 	<c:when test="${not empty translationsForm.translations}">
 		<form:form id="updateTranslationsForm"

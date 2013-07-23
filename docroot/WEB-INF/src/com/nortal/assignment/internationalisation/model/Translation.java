@@ -2,13 +2,13 @@ package com.nortal.assignment.internationalisation.model;
 
 public class Translation {
 
-	private String language;
+	private String locale;
 	private String key;
 	private String value;
 	private int id;
 
-	public Translation(String language, String key, String value) {
-		setLanguage(language);
+	public Translation(String locale, String key, String value) {
+		setLocale(locale);
 		setKey(key);
 		setValue(value);
 	}
@@ -16,12 +16,12 @@ public class Translation {
 	public Translation() {
 	}
 
-	public String getLanguage() {
-		return language;
+	public String getLocale() {
+		return locale;
 	}
 
-	public void setLanguage(String language) {
-		this.language = language;
+	public void setLocale(String locale) {
+		this.locale = locale;
 	}
 
 	public String getValue() {
@@ -52,7 +52,7 @@ public class Translation {
 			return false;
 		}
 		Translation t1 = (Translation) other;
-		return t1.language.equals(language) && t1.key.equals(key)
+		return t1.locale.equals(locale) && t1.key.equals(key)
 				&& t1.value.equals(value);
 	}
 

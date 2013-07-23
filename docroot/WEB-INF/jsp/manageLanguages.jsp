@@ -17,7 +17,7 @@
 			--
 		</option>
 		<form:options items="${languages}" itemValue="locale"
-			itemLabel="displayLanguage" />
+			itemLabel="name" />
 	</form:select>
 	<input type="submit"
 		value="<spring:message code="edit.text"/>" />
@@ -29,7 +29,7 @@
 <table>
 		<tr>
 			<th><spring:message code="language.text"/>:</th>
-			<td><input name="displayLanguage" type="text" /> </td>
+			<td><input name="name" type="text" /> </td>
 		</tr>
 		<tr>
 			<th><spring:message code="locale.text"/>:</th>

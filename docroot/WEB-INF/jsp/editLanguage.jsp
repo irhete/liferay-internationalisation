@@ -12,7 +12,7 @@
 <table>
 		<tr>
 			<th><spring:message code="language.text"/>:</th>
-			<td><input name="displayLanguage" type="text" value="${selectedLanguage.displayLanguage}" /> </td>
+			<td><input name="name" type="text" value="${selectedLanguage.name}" /> </td>
 
 		</tr>
 		<tr>

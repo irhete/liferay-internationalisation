@@ -2,24 +2,24 @@ package com.nortal.assignment.internationalisation.model;
 
 public class Language {
 
-	private String displayLanguage;
+	private String name;
 	private String locale;
 	private int id;
 
-	public Language(String displayName, String locale) {
-		setDisplayLanguage(displayName);
+	public Language(String name, String locale) {
+		setName(name);
 		setLocale(locale);
 	}
 
 	public Language() {
 	}
 
-	public String getDisplayLanguage() {
-		return displayLanguage;
+	public String getName() {
+		return name;
 	}
 
-	public void setDisplayLanguage(String displayName) {
-		displayLanguage = displayName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getLocale() {
@@ -50,7 +50,6 @@ public class Language {
 			return false;
 		}
 		Language l1 = (Language) other;
-		return l1.displayLanguage.equals(displayLanguage)
-				&& l1.locale.equals(locale) && l1.id == id;
+		return l1.name.equals(name) && l1.locale.equals(locale) && l1.id == id;
 	}
 }

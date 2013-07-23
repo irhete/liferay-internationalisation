@@ -25,7 +25,7 @@ public class TranslationValidatorTests {
 	@Test
 	public void validateSuccessfulTest() {
 		translation.setKey("key");
-		translation.setLanguage("EN");
+		translation.setLocale("EN");
 		translation.setValue("value");
 		
 		validator.validate(translation, errors);
@@ -34,7 +34,7 @@ public class TranslationValidatorTests {
 
 	@Test
 	public void validateKeyNullTest() {
-		translation.setLanguage("EN");
+		translation.setLocale("EN");
 		translation.setValue("value");
 		
 		validator.validate(translation, errors);
@@ -53,7 +53,7 @@ public class TranslationValidatorTests {
 	@Test
 	public void validateValueNullTest() {
 		translation.setKey("key");
-		translation.setLanguage("EN");
+		translation.setLocale("EN");
 		
 		validator.validate(translation, errors);
 		assertEquals("Value can not be empty", errors.getAllErrors().get(0).getCode());

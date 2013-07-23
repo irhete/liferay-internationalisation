@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
+import com.nortal.assignment.internationalisation.data.LanguageDAO;
 import com.nortal.assignment.internationalisation.data.TranslationDAO;
 import com.nortal.assignment.internationalisation.form.TranslationsForm;
 import com.nortal.assignment.internationalisation.messages.VerticalDatabaseMessageSource;
@@ -32,27 +33,21 @@ import com.nortal.assignment.internationalisation.validator.TranslationValidator
 
 @Controller(value = "InternationalisationController")
 @RequestMapping("VIEW")
-@SessionAttributes("selectedLanguage")
+@SessionAttributes({ "selectedLanguage", "translationsForm" })
 public class InternationalisationController {
 
 	@Resource
 	private TranslationDAO translationDAO;
 
 	@Resource
+	private LanguageDAO languageDAO;
+
+	@Resource
 	private VerticalDatabaseMessageSource messageSource;
 
 	@ModelAttribute("languages")
 	public List<Language> getLanguages() {
-		return translationDAO.getLanguages();
-	}
-
-	@ModelAttribute("translationsForm")
-	public TranslationsForm getTranslationsForm(
-			@ModelAttribute("selectedLanguage") Language selectedLanguage) {
-		TranslationsForm form = new TranslationsForm();
-		form.setTranslations(translationDAO.getTranslations(selectedLanguage
-				.getLocale()));
-		return form;
+		return languageDAO.getLanguages();
 	}
 
 	@RenderMapping
@@ -69,7 +64,7 @@ public class InternationalisationController {
 			BindingResult result,
 			@ModelAttribute("selectedLanguage") Language selectedLanguage,
 			Model model) throws ParseException {
-		translation.setLanguage(selectedLanguage.getLocale());
+		translation.setLocale(selectedLanguage.getLocale());
 		TranslationValidator validator = new TranslationValidator();
 		validator.validate(translation, result);
 
@@ -81,7 +76,7 @@ public class InternationalisationController {
 			} catch (DuplicateKeyException e) {
 				result.addError(new ObjectError("newTranslation",
 						"Translation for key '" + translation.getKey()
-								+ "' and locale '" + translation.getLanguage()
+								+ "' and locale '" + translation.getLocale()
 								+ "' already exists."));
 			}
 		}
@@ -92,16 +87,18 @@ public class InternationalisationController {
 	public String showTranslationsMethod(RenderRequest request,
 			RenderResponse response, Model model,
 			@ModelAttribute("selectedLanguage") Language selectedLanguage) {
-
 		try {
-			selectedLanguage = translationDAO.getLanguage(selectedLanguage
+			selectedLanguage = languageDAO.getLanguage(selectedLanguage
 					.getLocale());
 			model.addAttribute("selectedLanguage", selectedLanguage);
+			TranslationsForm form = new TranslationsForm();
+			form.setTranslations(translationDAO
+					.getTranslations(selectedLanguage.getLocale()));
+			model.addAttribute("translationsForm", form);
 		} catch (IndexOutOfBoundsException e) {
 			model.addAttribute("error", "Choose language");
 			return handleRenderRequest(request, response, model);
 		}
-
 		return "viewAndAddTranslationsForLanguage";
 	}
 
@@ -115,7 +112,7 @@ public class InternationalisationController {
 		validator.validate(newLanguage, result);
 		if (!result.hasErrors()) {
 			try {
-				translationDAO.addLanguage(newLanguage);
+				languageDAO.addLanguage(newLanguage);
 				model.addAttribute("success", "Language successfully added!");
 			} catch (DuplicateKeyException e) {
 				model.addAttribute("error", "Language with locale '"
@@ -136,7 +133,7 @@ public class InternationalisationController {
 			RenderResponse response, Model model,
 			@ModelAttribute("selectedLanguage") Language selectedLanguage) {
 		try {
-			selectedLanguage = translationDAO.getLanguage(selectedLanguage
+			selectedLanguage = languageDAO.getLanguage(selectedLanguage
 					.getLocale());
 			model.addAttribute("selectedLanguage", selectedLanguage);
 		} catch (IndexOutOfBoundsException e) {
@@ -150,7 +147,7 @@ public class InternationalisationController {
 	public void deleteLanguageMethod(ActionRequest request,
 			ActionResponse response,
 			@ModelAttribute("selectedLanguage") Language language) {
-		translationDAO.deleteLanguage(language);
+		languageDAO.deleteLanguage(language.getId());
 		response.setRenderParameter("action", "renderManageLanguages");
 	}
 
@@ -167,7 +164,7 @@ public class InternationalisationController {
 		validator.validate(updatedLanguage, result);
 		if (!result.hasErrors()) {
 			try {
-				translationDAO.editLanguage(updatedLanguage);
+				languageDAO.editLanguage(updatedLanguage);
 				model.addAttribute("success", "Language successfully updated!");
 			} catch (DuplicateKeyException e) {
 				model.addAttribute("error", "Language with locale '"
