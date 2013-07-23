@@ -46,6 +46,15 @@ public class InternationalisationController {
 		return translationDAO.getLanguages();
 	}
 
+	@ModelAttribute("translationsForm")
+	public TranslationsForm getTranslationsForm(
+			@ModelAttribute("selectedLanguage") Language selectedLanguage) {
+		TranslationsForm form = new TranslationsForm();
+		form.setTranslations(translationDAO.getTranslations(selectedLanguage
+				.getLocale()));
+		return form;
+	}
+
 	@RenderMapping
 	public String handleRenderRequest(RenderRequest request,
 			RenderResponse response, Model model) {
@@ -83,10 +92,6 @@ public class InternationalisationController {
 	public String showTranslationsMethod(RenderRequest request,
 			RenderResponse response, Model model,
 			@ModelAttribute("selectedLanguage") Language selectedLanguage) {
-		TranslationsForm form = new TranslationsForm();
-		String locale = selectedLanguage.getLocale();
-		form.setTranslations(translationDAO.getTranslations(locale));
-		model.addAttribute("translationsForm", form);
 
 		try {
 			selectedLanguage = translationDAO.getLanguage(selectedLanguage
@@ -188,7 +193,7 @@ public class InternationalisationController {
 			validator.validate(translation, errors);
 			i++;
 			if (errors.hasErrors()) {
-				System.out.println("error");
+				System.out.println(errors.getAllErrors().get(0));
 				result.addError(new ObjectError("translations[" + i + "]",
 						"error.text"));
 			} else {

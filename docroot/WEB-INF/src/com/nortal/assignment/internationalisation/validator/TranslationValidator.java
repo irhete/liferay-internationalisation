@@ -17,7 +17,6 @@ public class TranslationValidator implements Validator {
 	public void validate(Object arg0, Errors e) {
 		ValidationUtils.rejectIfEmpty(e, "key", "empty");
 		ValidationUtils.rejectIfEmpty(e, "value", "empty");
-		ValidationUtils.rejectIfEmpty(e, "language", "empty");
 	}
 
 }

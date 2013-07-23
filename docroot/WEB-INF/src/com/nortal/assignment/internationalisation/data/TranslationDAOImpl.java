@@ -4,11 +4,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Repository;
 
 import com.nortal.assignment.internationalisation.model.Language;
@@ -17,15 +19,30 @@ import com.nortal.assignment.internationalisation.model.Translation;
 @Repository
 public class TranslationDAOImpl implements TranslationDAO {
 
-	@Resource(name = "jdbcTemplate")
-	private JdbcTemplate jdbcTemplate;
+	@Resource(name = "dataSource")
+	private DriverManagerDataSource dataSource;
 
-	public JdbcTemplate getJdbcTemplate() {
+	private SimpleJdbcTemplate jdbcTemplate;
+
+	public DriverManagerDataSource getDataSource() {
+		return dataSource;
+	}
+
+	public void setDataSource(DriverManagerDataSource dataSource) {
+		this.dataSource = dataSource;
+	}
+
+	public SimpleJdbcTemplate getJdbcTemplate() {
 		return jdbcTemplate;
 	}
 
-	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+	public void setJdbcTemplate(SimpleJdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
+	}
+
+	@PostConstruct
+	public void init() {
+		jdbcTemplate = new SimpleJdbcTemplate(dataSource);
 	}
 
 	@Override
@@ -87,7 +104,10 @@ public class TranslationDAOImpl implements TranslationDAO {
 
 	@Override
 	public void updateTranslation(Translation translation) {
-		final String sql = "UPDATE translation SET (value=?, key=?) WHERE id=?";
+		final String sql = "UPDATE translation SET value=?, key=? WHERE id=?";
+		System.out.println(translation.getValue());
+		System.out.println(translation.getKey());
+		System.out.println(translation.getId());
 		jdbcTemplate.update(sql, translation.getValue(), translation.getKey(),
 				translation.getId());
 	}

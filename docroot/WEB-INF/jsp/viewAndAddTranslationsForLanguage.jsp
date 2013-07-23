@@ -45,7 +45,7 @@
 							value="${translation.key}" /></td>
 						<td><input name="translations[${status.index}].value" type="text"
 							value="${translation.value}" /></td>
-						<td><a href="${deleteTranslationMethodURL}&id=${translation}.id"><spring:message code="delete.text"/></a></td>
+						<td><a href="${deleteTranslationMethodURL}&id=${translation.id}"><spring:message code="delete.text"/></a></td>
 					<td><form:errors path="translations[${status.index}]" cssClass="error"/></td>
 					</tr>
 				</c:forEach>
