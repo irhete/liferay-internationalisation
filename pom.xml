@@ -1,9 +1,20 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>internationalisation-portlet</groupId>
-  <artifactId>internationalisation-portlet</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
- <build>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>internationalisation-portlet</groupId>
+	<artifactId>internationalisation-portlet</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<profiles>
+		<profile>
+			<id>development</id>
+			<properties>
+				<package.output.dir>C:/Liferay/liferay-portal-6.1.1-ce-ga2/deploy</package.output.dir>
+			</properties>
+		</profile>
+	</profiles>
+
+	<build>
 		<sourceDirectory>docroot/WEB-INF/src</sourceDirectory>
 		<testSourceDirectory>docroot/WEB-INF/test</testSourceDirectory>
 		<resources>
@@ -33,6 +44,25 @@
 							<classpathPrefix>lib/</classpathPrefix>
 						</manifest>
 					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.0.1</version>
+				<executions>
+					<execution>
+						<id>prepare-war</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>exploded</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<webXml>docroot/WEB-INF/web.xml</webXml>
+					<warName>internationalisation-portlet</warName>
+					<warSourceDirectory>docroot</warSourceDirectory>
+					<outputDirectory>${package.output.dir}</outputDirectory>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -157,6 +187,12 @@
 			<version>2.2.4</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.nortal.assignment</groupId>
+			<artifactId>common-messages</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
+	<packaging>war</packaging>
 </project>

@@ -1,11 +1,7 @@
-com\nortal\assignment\internationalisation\messages\VerticalDatabaseMessageSource.class
-com\nortal\assignment\internationalisation\data\TranslationDAOImpl$TranslationRowMapper.class
-com\nortal\assignment\internationalisation\data\TranslationDAOImpl$2.class
-com\nortal\assignment\internationalisation\data\TranslationDAO.class
-com\nortal\assignment\internationalisation\messages\DatabaseMessageSourceBase$1.class
-com\nortal\assignment\internationalisation\data\TranslationDAOImpl.class
-com\nortal\assignment\internationalisation\data\TranslationDAOImpl$1.class
-com\nortal\assignment\internationalisation\messages\DatabaseMessageSourceBase$Messages.class
-com\nortal\assignment\internationalisation\messages\DatabaseMessageSourceBase.class
-com\nortal\assignment\internationalisation\model\Translation.class
+com\nortal\assignment\internationalisation\form\TranslationsForm.class
+com\nortal\assignment\internationalisation\validator\TranslationValidator.class
+com\nortal\assignment\internationalisation\validator\LanguageValidator.class
+com\nortal\assignment\internationalisation\data\LanguageDAOImpl.class
+com\nortal\assignment\internationalisation\model\Language.class
 com\nortal\assignment\internationalisation\controller\InternationalisationController.class
+com\nortal\assignment\internationalisation\data\LanguageDAO.class

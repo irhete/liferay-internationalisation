@@ -1,6 +1,7 @@
-C:\Liferay\liferay-plugins-sdk-6.1.1\portlets\internationalisation-portlet\docroot\WEB-INF\src\com\nortal\assignment\internationalisation\messages\VerticalDatabaseMessageSource.java
-C:\Liferay\liferay-plugins-sdk-6.1.1\portlets\internationalisation-portlet\docroot\WEB-INF\src\com\nortal\assignment\internationalisation\messages\DatabaseMessageSourceBase.java
+C:\Liferay\liferay-plugins-sdk-6.1.1\portlets\internationalisation-portlet\docroot\WEB-INF\src\com\nortal\assignment\internationalisation\data\LanguageDAOImpl.java
 C:\Liferay\liferay-plugins-sdk-6.1.1\portlets\internationalisation-portlet\docroot\WEB-INF\src\com\nortal\assignment\internationalisation\controller\InternationalisationController.java
-C:\Liferay\liferay-plugins-sdk-6.1.1\portlets\internationalisation-portlet\docroot\WEB-INF\src\com\nortal\assignment\internationalisation\model\Translation.java
-C:\Liferay\liferay-plugins-sdk-6.1.1\portlets\internationalisation-portlet\docroot\WEB-INF\src\com\nortal\assignment\internationalisation\data\TranslationDAO.java
-C:\Liferay\liferay-plugins-sdk-6.1.1\portlets\internationalisation-portlet\docroot\WEB-INF\src\com\nortal\assignment\internationalisation\data\TranslationDAOImpl.java
+C:\Liferay\liferay-plugins-sdk-6.1.1\portlets\internationalisation-portlet\docroot\WEB-INF\src\com\nortal\assignment\internationalisation\form\TranslationsForm.java
+C:\Liferay\liferay-plugins-sdk-6.1.1\portlets\internationalisation-portlet\docroot\WEB-INF\src\com\nortal\assignment\internationalisation\validator\LanguageValidator.java
+C:\Liferay\liferay-plugins-sdk-6.1.1\portlets\internationalisation-portlet\docroot\WEB-INF\src\com\nortal\assignment\internationalisation\model\Language.java
+C:\Liferay\liferay-plugins-sdk-6.1.1\portlets\internationalisation-portlet\docroot\WEB-INF\src\com\nortal\assignment\internationalisation\validator\TranslationValidator.java
+C:\Liferay\liferay-plugins-sdk-6.1.1\portlets\internationalisation-portlet\docroot\WEB-INF\src\com\nortal\assignment\internationalisation\data\LanguageDAO.java

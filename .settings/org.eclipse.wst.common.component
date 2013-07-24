@@ -3,6 +3,7 @@
         <wb-resource deploy-path="/" source-path="/docroot" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/docroot/WEB-INF/src"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/docroot/WEB-INF/test"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/docroot/WEB-INF/test/db"/>
         <property name="context-root" value="internationalisation-portlet"/>
         <property name="java-output-path" value="/internationalisation-portlet/docroot/WEB-INF/classes"/>
     </wb-module>

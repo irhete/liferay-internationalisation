@@ -1,0 +1,5 @@
+com\nortal\assignment\internationalisation\test\TranslationDAOtests.class
+com\nortal\assignment\internationalisation\test\TranslationValidatorTests.class
+com\nortal\assignment\internationalisation\test\LanguageValidatorTests.class
+com\nortal\assignment\internationalisation\test\MessageSourceTests.class
+com\nortal\assignment\internationalisation\test\ControllerTests.class
