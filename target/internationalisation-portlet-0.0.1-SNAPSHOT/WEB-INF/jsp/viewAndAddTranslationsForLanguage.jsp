@@ -11,6 +11,7 @@
 	<portlet:param name="action" value="deleteTranslation"></portlet:param>
 </portlet:actionURL>
 
+<form:errors path="selectedLanguage" cssClass="error" />
 <form:form method="post" action="${showTranslationsMethodURL}"
 	modelAttribute="selectedLanguage">
 	<form:select path="locale">
@@ -34,6 +35,7 @@
 	<c:when test="${not empty translationsForm.translations}">
 		<form:form id="updateTranslationsForm"
 			action="${updateTranslationsMethodURL}" method="post" modelAttribute="translationsForm">
+			<form:errors path="*" cssClass="error"/>
 			<table id="translationTable">
 				<tr>
 					<th><spring:message code="key.text"/></th>
@@ -44,8 +46,9 @@
 						<td><input name="translations[${status.index}].key" type="text"
 							value="${translation.key}" /></td>
 						<td><input name="translations[${status.index}].value" type="text"
-							value="${translation.value}" /></td>
+							value="${translation.value}" /></td><td>
 						<td><a href="${deleteTranslationMethodURL}&id=${translation.id}"><spring:message code="delete.text"/></a></td>
+					<td><form:errors path="translations[${status.index}]" cssClass="error" text="err"/></td>
 					</tr>
 				</c:forEach>
 			</table>
@@ -58,7 +61,6 @@
 </c:choose>
 <h1><spring:message code="add.translation.text"/></h1>
 
-<form:errors path="newTranslation" cssClass="error" />
 <form:form id="addTranslationForm" action="${addTranslationMethodURL}" method="post" commandName="newTranslation">
 	<form:errors path="*" cssClass="error"/>
 	<table>

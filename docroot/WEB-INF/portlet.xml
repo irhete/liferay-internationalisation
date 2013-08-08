@@ -12,11 +12,6 @@
 			<name>contextConfigLocation</name>
 			<value>/WEB-INF/internationalisation-portlet.xml</value>
 		</init-param>
-		<init-param>
-			<name>view-template</name>
-			<value>/view.jsp</value>
-		</init-param>
-		<expiration-cache>0</expiration-cache>
 		<supports>
 			<mime-type>text/html</mime-type>
 		</supports>

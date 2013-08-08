@@ -13,7 +13,6 @@ import javax.portlet.ActionResponse;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -59,11 +58,6 @@ public class ControllerTests {
 	private VerticalDatabaseMessageSource messageSource;
 	@InjectMocks
 	private InternationalisationController controller;
-
-	@Before
-	public void setUp() {
-		Mockito.doNothing().when(messageSource).init();
-	}
 
 	@Test
 	public void testHandleRenderRequest() throws IOException {

@@ -8,6 +8,7 @@
 	<portlet:param name="action" value="renderEditLanguage"></portlet:param>
 </portlet:renderURL>
 
+<form:errors path="selectedLanguage" cssClass="error" />
 <form:form method="post" action="${renderEditLanguageMethodURL}"
 	modelAttribute="selectedLanguage">
 	<form:select path="locale">
@@ -26,15 +27,16 @@
 
 <form:errors path="newLanguage" cssClass="error" />
 <form:form method="post" action="${addLanguageMethodURL}" commandName="newLanguage">
-<form:errors path="*" cssClass="error" />
 <table>
 		<tr>
 			<th><spring:message code="language.text"/>:</th>
 			<td><input name="name" type="text" /> </td>
+			<td><form:errors path="name" cssClass="error" /></td>
 		</tr>
 		<tr>
 			<th><spring:message code="locale.text"/>:</th>
 			<td><input name="locale" type="text" /></td>
+			<td><form:errors path="locale" cssClass="error" /></td>
 		</tr>
 		<tr>
 			<th />

@@ -7,8 +7,6 @@
 		<control-panel-entry-category>portal</control-panel-entry-category>
 		<control-panel-entry-weight>2.1</control-panel-entry-weight>
 		<header-portlet-css>/css/main.css</header-portlet-css>
-		<header-portlet-javascript>https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js</header-portlet-javascript>
-		<header-portlet-javascript>https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js</header-portlet-javascript>
 		<footer-portlet-javascript>/js/translation.js</footer-portlet-javascript>	
 	</portlet>
 	<role-mapper>

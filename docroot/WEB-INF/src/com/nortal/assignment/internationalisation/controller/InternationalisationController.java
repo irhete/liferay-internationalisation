@@ -27,7 +27,6 @@ import com.nortal.assignment.internationalisation.form.TranslationsForm;
 import com.nortal.assignment.internationalisation.model.Language;
 import com.nortal.assignment.internationalisation.validator.LanguageValidator;
 import com.nortal.assignment.internationalisation.validator.TranslationValidator;
-import com.nortal.assignment.messagesource.VerticalDatabaseMessageSource;
 import com.nortal.assignment.messagesource.data.TranslationDAO;
 import com.nortal.assignment.messagesource.model.Translation;
 
@@ -41,9 +40,6 @@ public class InternationalisationController {
 
 	@Resource
 	private LanguageDAO languageDAO;
-
-	@Resource
-	private VerticalDatabaseMessageSource messageSource;
 
 	@ModelAttribute("languages")
 	public List<Language> getLanguages() {
@@ -71,7 +67,6 @@ public class InternationalisationController {
 		if (!result.hasErrors()) {
 			try {
 				translationDAO.insert(translation);
-				messageSource.init();
 				model.addAttribute("success", "Translation successfully added!");
 			} catch (DuplicateKeyException e) {
 				result.reject("duplicate.key", "default");
@@ -209,7 +204,6 @@ public class InternationalisationController {
 			}
 
 		}
-		messageSource.init();
 		response.setRenderParameter("action", "showTranslations");
 	}
 
@@ -218,7 +212,6 @@ public class InternationalisationController {
 			ActionResponse response, @RequestParam("id") int translationId,
 			Model model) {
 		translationDAO.deleteTranslation(translationId);
-		messageSource.init();
 		model.addAttribute("success", "Translation successfully deleted!");
 		response.setRenderParameter("action", "showTranslations");
 	}

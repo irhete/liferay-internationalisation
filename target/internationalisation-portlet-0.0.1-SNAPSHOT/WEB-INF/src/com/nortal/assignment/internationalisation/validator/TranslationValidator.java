@@ -4,7 +4,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import com.nortal.assignment.messagesource.Translation;
+import com.nortal.assignment.messagesource.model.Translation;
 
 public class TranslationValidator implements Validator {
 
@@ -19,6 +19,8 @@ public class TranslationValidator implements Validator {
 				.rejectIfEmpty(e, "key", "empty", "Key can not be empty");
 		ValidationUtils.rejectIfEmpty(e, "value", "empty",
 				"Value can not be empty");
+		ValidationUtils.rejectIfEmpty(e, "locale", "empty",
+				"Language can not be empty");
 	}
 
 }

@@ -1,5 +1,6 @@
 <%@ include file="common.jsp"%>
 
+<form:errors path="selectedLanguage" cssClass="error" />
 <form:form method="post" action="${showTranslationsMethodURL}"
 	modelAttribute="selectedLanguage">
 	<form:select path="locale">
