@@ -36,8 +36,7 @@ public class LanguageValidatorTests {
 		language.setName("English");
 
 		validator.validate(language, errors);
-		assertEquals("Locale can not be empty", errors.getAllErrors().get(0)
-				.getCode());
+		assertEquals("empty", errors.getAllErrors().get(0).getCode());
 	}
 
 	@Test
@@ -45,7 +44,6 @@ public class LanguageValidatorTests {
 		language.setLocale("EN");
 
 		validator.validate(language, errors);
-		assertEquals("Language display name can not be empty", errors
-				.getAllErrors().get(0).getCode());
+		assertEquals("empty", errors.getAllErrors().get(0).getCode());
 	}
 }

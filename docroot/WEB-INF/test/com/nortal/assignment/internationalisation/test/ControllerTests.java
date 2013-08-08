@@ -19,7 +19,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.ui.Model;
@@ -33,9 +32,9 @@ import com.nortal.assignment.internationalisation.data.LanguageDAO;
 import com.nortal.assignment.internationalisation.model.Language;
 import com.nortal.assignment.internationalisation.validator.LanguageValidator;
 import com.nortal.assignment.internationalisation.validator.TranslationValidator;
-import com.nortal.assignment.messagesource.Translation;
-import com.nortal.assignment.messagesource.TranslationDAO;
 import com.nortal.assignment.messagesource.VerticalDatabaseMessageSource;
+import com.nortal.assignment.messagesource.data.TranslationDAO;
+import com.nortal.assignment.messagesource.model.Translation;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ControllerTests {
@@ -63,7 +62,6 @@ public class ControllerTests {
 
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
 		Mockito.doNothing().when(messageSource).init();
 	}
 

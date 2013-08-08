@@ -27,9 +27,9 @@ import com.nortal.assignment.internationalisation.form.TranslationsForm;
 import com.nortal.assignment.internationalisation.model.Language;
 import com.nortal.assignment.internationalisation.validator.LanguageValidator;
 import com.nortal.assignment.internationalisation.validator.TranslationValidator;
-import com.nortal.assignment.messagesource.Translation;
-import com.nortal.assignment.messagesource.TranslationDAO;
 import com.nortal.assignment.messagesource.VerticalDatabaseMessageSource;
+import com.nortal.assignment.messagesource.data.TranslationDAO;
+import com.nortal.assignment.messagesource.model.Translation;
 
 @Controller(value = "InternationalisationController")
 @RequestMapping("VIEW")
