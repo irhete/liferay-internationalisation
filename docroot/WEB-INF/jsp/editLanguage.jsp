@@ -8,17 +8,18 @@
 	<portlet:param name="action" value="deleteLanguage"></portlet:param>
 </portlet:actionURL>
 
+<form:errors path="updatedLanguage" cssClass="error" />
 <form:form method="post" action="${editLanguageMethodURL}" commandName="updatedLanguage">
 <table>
 		<tr>
 			<th><spring:message code="language.text"/>:</th>
 			<td><input name="name" type="text" value="${selectedLanguage.name}" /> </td>
-
+			<td><form:errors path="name" cssClass="error" /></td>
 		</tr>
 		<tr>
 			<th><spring:message code="locale.text"/>:</th>
 			<td><input name="locale" type="text" value="${selectedLanguage.locale}" /></td>
-
+			<td><form:errors path="locale" cssClass="error" /></td>
 		</tr>
 		<tr>
 			<th></th>

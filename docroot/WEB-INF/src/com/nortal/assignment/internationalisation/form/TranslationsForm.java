@@ -1,10 +1,11 @@
 package com.nortal.assignment.internationalisation.form;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.nortal.assignment.messagesource.Translation;
 
-public class TranslationsForm {
+public class TranslationsForm implements Serializable {
 
 	private List<Translation> translations;
 

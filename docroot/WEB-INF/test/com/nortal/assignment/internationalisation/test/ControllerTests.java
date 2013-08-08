@@ -128,7 +128,7 @@ public class ControllerTests {
 		Language language = new Language();
 		language.setLocale("EN");
 		String viewName = controller.showTranslationsMethod(request, response,
-				model, language);
+				model, language, result);
 		assertEquals("viewAndAddTranslationsForLanguage", viewName);
 		Mockito.verify(model).addAttribute("success", successMessage);
 	}
@@ -141,7 +141,7 @@ public class ControllerTests {
 		Mockito.doThrow(new IndexOutOfBoundsException("")).when(languageDAO)
 				.getLanguage(locale);
 		String viewName = controller.showTranslationsMethod(request, response,
-				model, language);
+				model, language, result);
 		assertEquals("defaultRender", viewName);
 		Mockito.verify(model).addAttribute("error", "Choose language");
 	}
@@ -153,7 +153,7 @@ public class ControllerTests {
 		Language language = new Language();
 		language.setLocale("EN");
 		String viewName = controller.showTranslationsMethod(request, response,
-				model, language);
+				model, language, result);
 		assertEquals("viewAndAddTranslationsForLanguage", viewName);
 		Mockito.verify(model).addAttribute("errors", errors);
 	}
@@ -165,7 +165,7 @@ public class ControllerTests {
 		Language language = new Language();
 		language.setLocale("EN");
 		String viewName = controller.showTranslationsMethod(request, response,
-				model, language);
+				model, language, result);
 		assertEquals("viewAndAddTranslationsForLanguage", viewName);
 		Mockito.verify(model).addAttribute("error", errorMessage);
 	}
@@ -225,7 +225,7 @@ public class ControllerTests {
 		Language language = new Language();
 		language.setLocale("EN");
 		String viewName = controller.renderEditLanguageMethod(request,
-				response, model, language);
+				response, model, language, result);
 		assertEquals("editLanguage", viewName);
 		Mockito.verify(model).addAttribute("success", successMessage);
 	}
@@ -238,7 +238,7 @@ public class ControllerTests {
 		Mockito.doThrow(new IndexOutOfBoundsException("")).when(languageDAO)
 				.getLanguage(locale);
 		String viewName = controller.renderEditLanguageMethod(request,
-				response, model, language);
+				response, model, language, result);
 		assertEquals("manageLanguages", viewName);
 		Mockito.verify(model).addAttribute("error", "Choose language");
 	}
@@ -251,7 +251,7 @@ public class ControllerTests {
 		List<ObjectError> errors = new ArrayList<ObjectError>();
 		Mockito.when(request.getAttribute("errors")).thenReturn(errors);
 		String viewName = controller.renderEditLanguageMethod(request,
-				response, model, language);
+				response, model, language, result);
 		assertEquals("editLanguage", viewName);
 		Mockito.verify(model).addAttribute("errors", errors);
 	}

@@ -16,9 +16,6 @@
 </portlet:renderURL>
 
 <c:choose>
-	<c:when test="${not empty error}">
-		<p class="error">${error}</p>
-	</c:when>
 	<c:when test="${not empty success}">
 		<p class="success">${success}</p>
 	</c:when>
