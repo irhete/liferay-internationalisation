@@ -69,7 +69,7 @@ public class InternationalisationController {
 				translationDAO.insert(translation);
 				model.addAttribute("success", "Translation successfully added!");
 			} catch (DuplicateKeyException e) {
-				result.reject("duplicate.key", "default");
+				result.reject("duplicate.key");
 			}
 		}
 		response.setRenderParameter("action", "showTranslations");
