@@ -2,7 +2,6 @@ package com.nortal.assignment.internationalisation.test;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,6 +12,7 @@ import javax.portlet.ActionResponse;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -55,19 +55,38 @@ public class ControllerTests {
 	@InjectMocks
 	private InternationalisationController controller;
 
+	private String locale = "RU";
+
+	private Language language = new Language("Russian", locale);
+
+	private Translation translation = new Translation("ET", "edit", "Muuda");
+
+	private List<Translation> oldTranslations;
+
+	private List<Translation> newTranslations;
+
+	private TranslationsForm form;
+
+	@Before
+	public void setUp() {
+		Translation t1 = new Translation("EN", "delete", "Delete");
+		Translation t2 = new Translation("EN", "salvesta", "Salvesta");
+		Translation newT1 = new Translation("EN", "delete", "Remove");
+		oldTranslations = new ArrayList<Translation>(Arrays.asList(t1, t2));
+		newTranslations = new ArrayList<Translation>(Arrays.asList(newT1, t2));
+		form = new TranslationsForm();
+		form.setTranslations(newTranslations);
+	}
+
 	@Test
-	public void testHandleRenderRequest() throws IOException {
+	public void testHandleRenderRequest() {
 		String viewName = controller.handleRenderRequest(request, response,
 				model);
 		assertEquals("defaultRender", viewName);
 	}
 
 	@Test
-	public void testAddTranslationMethod() throws ParseException {
-		String key = "edit";
-		String value = "Muuda";
-		String locale = "ET";
-		Translation translation = new Translation(locale, key, value);
+	public void testAddTranslationMethod() {
 		controller.addTranslationMethod(actionRequest, actionResponse,
 				translation, result, new Language(), model);
 		Mockito.verify(translationDAO).insert(translation);
@@ -76,11 +95,7 @@ public class ControllerTests {
 	}
 
 	@Test
-	public void testAddTranslationValidationErrors() throws ParseException {
-		String key = "";
-		String value = "Muuda";
-		String locale = "ET";
-		Translation translation = new Translation(locale, key, value);
+	public void testAddTranslationValidationErrors() {
 		Mockito.when(result.hasErrors()).thenReturn(true);
 		controller.addTranslationMethod(actionRequest, actionResponse,
 				translation, result, new Language(), model);
@@ -88,11 +103,7 @@ public class ControllerTests {
 	}
 
 	@Test
-	public void testAddTranslationDuplicateKey() throws ParseException {
-		String key = "edit";
-		String value = "Muuda";
-		String locale = "ET";
-		Translation translation = new Translation(locale, key, value);
+	public void testAddTranslationDuplicateKey() {
 		Mockito.doThrow(new DuplicateKeyException("")).when(translationDAO)
 				.insert(translation);
 
@@ -103,9 +114,6 @@ public class ControllerTests {
 
 	@Test
 	public void testShowTranslationsMethodNoLanguageSelected() {
-		String locale = "language";
-		Language language = new Language();
-		language.setLocale(locale);
 		Mockito.doThrow(new IndexOutOfBoundsException("")).when(languageDAO)
 				.getLanguage(locale);
 		String viewName = controller.showTranslationsMethod(request, response,
@@ -116,36 +124,27 @@ public class ControllerTests {
 
 	@Test
 	public void testAddLanguageMethod() {
-		String language = "Russian";
-		String locale = "RU";
-		Language newLanguage = new Language(language, locale);
-		controller.addLanguageMethod(actionRequest, actionResponse,
-				newLanguage, result, model);
-		Mockito.verify(languageDAO).addLanguage(newLanguage);
+		controller.addLanguageMethod(actionRequest, actionResponse, language,
+				result, model);
+		Mockito.verify(languageDAO).addLanguage(language);
 		Mockito.verify(model).addAttribute("success",
 				"Language successfully added!");
 	}
 
 	@Test
-	public void testAddLanguageMethodDuplicateKey() throws ParseException {
-		String language = "Russian";
-		String locale = "RU";
-		Language newLanguage = new Language(language, locale);
+	public void testAddLanguageMethodDuplicateKey() {
 		Mockito.doThrow(new DuplicateKeyException("")).when(languageDAO)
-				.addLanguage(newLanguage);
-		controller.addLanguageMethod(actionRequest, actionResponse,
-				newLanguage, result, model);
+				.addLanguage(language);
+		controller.addLanguageMethod(actionRequest, actionResponse, language,
+				result, model);
 		Mockito.verify(result).reject("duplicate.key");
 	}
 
 	@Test
-	public void testAddLanguageMethodValidationErrors() throws ParseException {
-		String language = "Russian";
-		String locale = "";
-		Language newLanguage = new Language(language, locale);
+	public void testAddLanguageMethodValidationErrors() {
 		Mockito.when(result.hasErrors()).thenReturn(true);
-		controller.addLanguageMethod(actionRequest, actionResponse,
-				newLanguage, result, model);
+		controller.addLanguageMethod(actionRequest, actionResponse, language,
+				result, model);
 		Mockito.verify(model, Mockito.never()).addAttribute("success",
 				"Language successfully added!");
 	}
@@ -159,9 +158,6 @@ public class ControllerTests {
 
 	@Test
 	public void testRenderEditLanguageMethodNoLanguageSelected() {
-		String locale = "language";
-		Language language = new Language();
-		language.setLocale(locale);
 		Mockito.doThrow(new IndexOutOfBoundsException("")).when(languageDAO)
 				.getLanguage(locale);
 		String viewName = controller.renderEditLanguageMethod(request,
@@ -173,7 +169,6 @@ public class ControllerTests {
 	@Test
 	public void testDeleteLanguageMethod() {
 		int id = 1;
-		Language language = new Language();
 		language.setId(id);
 		controller
 				.deleteLanguageMethod(actionRequest, actionResponse, language);
@@ -182,10 +177,6 @@ public class ControllerTests {
 
 	@Test
 	public void testEditLanguageMethod() {
-		String oldLanguage = "FR";
-		String newLanguage = "Russian";
-		String newLocale = "RU";
-		Language language = new Language(newLanguage, newLocale);
 		controller.editLanguageMethod(actionRequest, actionResponse, language,
 				result, language, model);
 		Mockito.verify(languageDAO).editLanguage(language);
@@ -195,10 +186,6 @@ public class ControllerTests {
 
 	@Test
 	public void testEditLanguageMethodDuplicateLocale() {
-		String oldLanguage = "FR";
-		String newLanguage = "Russian";
-		String newLocale = "RU";
-		Language language = new Language(newLanguage, newLocale);
 		Mockito.doThrow(new DuplicateKeyException("")).when(languageDAO)
 				.editLanguage(language);
 		controller.editLanguageMethod(actionRequest, actionResponse, language,
@@ -208,10 +195,6 @@ public class ControllerTests {
 
 	@Test
 	public void testEditLanguageMethodValidationErrors() {
-		String oldLanguage = "FR";
-		String newLanguage = "Russian";
-		String newLocale = "";
-		Language language = new Language(newLanguage, newLocale);
 		Mockito.when(result.hasErrors()).thenReturn(true);
 		controller.editLanguageMethod(actionRequest, actionResponse, language,
 				result, language, model);
@@ -221,66 +204,35 @@ public class ControllerTests {
 
 	@Test
 	public void testUpdateTranslationsMethod() throws ParseException {
-		String currentLocale = "EN";
-		Translation t1 = new Translation("EN", "delete", "Delete");
-		Translation t2 = new Translation("EN", "salvesta", "Salvesta");
-		Translation newT1 = new Translation("EN", "delete", "Remove");
-		List<Translation> oldTranslations = new ArrayList<Translation>(
-				Arrays.asList(t1, t2));
-		List<Translation> newTranslations = new ArrayList<Translation>(
-				Arrays.asList(newT1, t2));
-		Mockito.when(translationDAO.getTranslations(currentLocale)).thenReturn(
+		Mockito.when(translationDAO.getTranslations(locale)).thenReturn(
 				oldTranslations);
-		TranslationsForm form = new TranslationsForm();
-		Language selectedLanguage = new Language("Eesti", "et_EE");
-		form.setTranslations(newTranslations);
 		controller.updateTranslationsMethod(actionRequest, actionResponse,
-				form, result, selectedLanguage, model);
-		Mockito.verify(translationDAO).updateTranslation(newT1);
+				form, result, language, model);
+		Mockito.verify(translationDAO)
+				.updateTranslation(newTranslations.get(0));
 	}
 
 	@Test
 	public void testUpdateTranslationsKeyAndValueMethodDuplicateKey()
 			throws ParseException {
-		String currentLocale = "EN";
-		Translation t1 = new Translation("EN", "delete", "Delete");
-		Translation t2 = new Translation("EN", "salvesta", "Salvesta");
-		Translation newT1 = new Translation("EN", "delete", "Remove");
-		List<Translation> oldTranslations = new ArrayList<Translation>(
-				Arrays.asList(t1, t2));
-		List<Translation> newTranslations = new ArrayList<Translation>(
-				Arrays.asList(newT1, t2));
-		Mockito.when(translationDAO.getTranslations(currentLocale)).thenReturn(
+		Mockito.when(translationDAO.getTranslations(locale)).thenReturn(
 				oldTranslations);
-		TranslationsForm form = new TranslationsForm();
-		Language selectedLanguage = new Language("Eesti", "et_EE");
-		form.setTranslations(newTranslations);
 		Mockito.doThrow(new DuplicateKeyException("")).when(translationDAO)
-				.updateTranslation(newT1);
+				.updateTranslation(newTranslations.get(0));
 		controller.updateTranslationsMethod(actionRequest, actionResponse,
-				form, result, selectedLanguage, model);
+				form, result, language, model);
 		Mockito.verify(result).reject("duplicate.key");
 	}
 
 	@Test
 	public void testUpdateTranslationsMethodValidationErrors()
 			throws ParseException {
-		String currentLocale = "EN";
-		String language = "English";
-		Language selectedLanguage = new Language(language, currentLocale);
-		Translation t1 = new Translation("EN", "delete", "Delete");
-		Translation t2 = new Translation("EN", "salvesta", "Salvesta");
 		Translation newT1 = new Translation("EN", "delete", "");
-		List<Translation> oldTranslations = new ArrayList<Translation>(
-				Arrays.asList(t1, t2));
-		List<Translation> newTranslations = new ArrayList<Translation>(
-				Arrays.asList(newT1, t2));
-		Mockito.when(translationDAO.getTranslations(currentLocale)).thenReturn(
+		form.getTranslations().set(0, newT1);
+		Mockito.when(translationDAO.getTranslations(locale)).thenReturn(
 				oldTranslations);
-		TranslationsForm form = new TranslationsForm();
-		form.setTranslations(newTranslations);
 		controller.updateTranslationsMethod(actionRequest, actionResponse,
-				form, result, selectedLanguage, model);
+				form, result, language, model);
 		Mockito.verify(translationDAO, Mockito.never())
 				.updateTranslation(newT1);
 	}

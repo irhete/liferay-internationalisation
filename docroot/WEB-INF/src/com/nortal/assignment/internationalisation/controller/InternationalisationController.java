@@ -59,7 +59,7 @@ public class InternationalisationController {
 			@ModelAttribute("newTranslation") Translation translation,
 			BindingResult result,
 			@ModelAttribute("selectedLanguage") Language selectedLanguage,
-			Model model) throws ParseException {
+			Model model) {
 		translation.setLocale(selectedLanguage.getLocale());
 		TranslationValidator validator = new TranslationValidator();
 		validator.validate(translation, result);
